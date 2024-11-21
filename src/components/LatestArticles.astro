@@ -1,0 +1,109 @@
+---
+const articles = [
+  {
+    category: 'NEWSLETTER',
+    title: '3 Lessons I Learned This Week',
+    link: '/articles/3-lessons'
+  },
+  {
+    category: 'NEWSLETTER',
+    title: 'What does it actually mean to be "efficient"?',
+    link: '/articles/efficiency'
+  },
+  {
+    category: 'NEWSLETTER',
+    title: 'A Little Happier: Stoic Principles for Modern Life',
+    link: '/articles/stoic-principles'
+  },
+  {
+    category: 'NEWSLETTER',
+    title: 'The 5/3/1 Method',
+    link: '/articles/531-method'
+  },
+  {
+    category: 'NEWSLETTER',
+    title: 'Are labels holding you back?',
+    link: '/articles/labels'
+  }
+];
+---
+
+<section class="articles-section">
+  <div class="container">
+    <h2>Latest Articles</h2>
+    <div class="articles-list">
+      {articles.map(article => (
+        <article class="article-card">
+          <span class="category">{article.category}</span>
+          <h3>
+            <a href={article.link}>{article.title}</a>
+          </h3>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .articles-section {
+    padding: 4rem 0;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--primary-color);
+  }
+
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .article-card {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background: white;
+    transition: transform 0.2s;
+  }
+
+  .article-card:hover {
+    transform: translateX(10px);
+  }
+
+  .category {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6B7280;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  h3 a {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    color: var(--primary-color);
+  }
+</style>

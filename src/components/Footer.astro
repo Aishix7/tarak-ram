@@ -1,0 +1,178 @@
+---
+import EmailSignup from "./EmailSignup.astro";
+
+const currentYear = new Date().getFullYear();
+
+const footerLinks = {
+  LINKS: [
+    { text: 'My Book', href: '/my-book' },
+    { text: 'Newsletter', href: '/newsletter' },
+    { text: 'About', href: '/about' },
+    { text: 'Articles', href: '/articles' }
+  ],
+  MORE: [
+    { text: 'Jobs', href: '/jobs' },
+    { text: 'Podcast', href: '/podcast' },
+    { text: 'Book Notes', href: '/book-notes' }
+  ],
+  COURSES: [
+    { text: 'Part-Time YouTuber Academy', href: '/youtube-academy' },
+    { text: 'Part-Time YouTuber Accelerator', href: '/youtube-accelerator' }
+  ]
+};
+
+const socialLinks = [
+  { platform: 'facebook', href: '#' },
+  { platform: 'twitter', href: '#' },
+  { platform: 'instagram', href: '#' },
+  { platform: 'linkedin', href: '#' },
+  { platform: 'youtube', href: '#' },
+  { platform: 'tiktok', href: '#' }
+];
+---
+
+
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-grid">
+      {Object.entries(footerLinks).map(([category, links]) => (
+        <div class="footer-column">
+          <h3>{category}</h3>
+          <ul>
+            {links.map(link => (
+              <li>
+                <a href={link.href}>{link.text}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="footer-bottom">
+      <div class="social-links">
+        {socialLinks.map(link => (
+          <a href={link.href} class="social-link" aria-label={`Follow on ${link.platform}`}>
+            <img src={`/images/social/${link.platform}.svg`} alt="" />
+          </a>
+        ))}
+      </div>
+
+      <div class="footer-legal">
+        <p>&copy; Tarak Ram {currentYear}. All Rights Reserved</p>
+        <div class="legal-links">
+          <a href="/privacy">Privacy Policy</a>
+          <span>|</span>
+          <a href="/cookies">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: black;
+    color: white;
+    padding: 4rem 0 2rem;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .footer-column h3 {
+    color: #9CA3AF;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-column ul {
+    list-style: none;
+  }
+
+  .footer-column a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.875rem;
+    line-height: 2;
+  }
+
+  .footer-column a:hover {
+    color: var(--primary-color);
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #374151;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: black;
+    transition: background-color 0.2s;
+  }
+
+  .social-link:hover {
+    background: var(--primary-color);
+  }
+
+  .footer-legal {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #9CA3AF;
+  }
+
+  .legal-links {
+    margin-top: 0.5rem;
+  }
+
+  .legal-links a {
+    color: #9CA3AF;
+    text-decoration: none;
+  }
+
+  .legal-links span {
+    margin: 0 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .social-links {
+      order: 2;
+    }
+
+    .footer-legal {
+      order: 1;
+      text-align: left;
+    }
+  }
+</style>

@@ -1,0 +1,289 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../layouts/MainLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+import Footer from '../components/Footer.astro';
+
+const articles = await getCollection('articles');
+articles.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+function formatDate(date: Date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+const topics = [
+  { name: 'Writing', icon: '✍️', slug: 'writing' },
+  { name: 'Studying', icon: '📚', slug: 'studying' },
+  { name: 'YouTube', icon: '📹', slug: 'youtube' },
+  { name: 'Journal', icon: '📔', slug: 'journal' },
+  { name: 'Habits', icon: '🔥', slug: 'habits' },
+  { name: 'Productivity', icon: '🚀', slug: 'productivity' },
+  { name: 'Tools & Tech', icon: '🛠️', slug: 'tools-tech' },
+  { name: 'Business', icon: '💼', slug: 'business' }
+];
+---
+
+<MainLayout title="Articles">
+  <Navigation slot="header" />
+  
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1>Articles</h1>
+            <p>
+              I like to blog about stuff like productivity, business, YouTube,
+              and other stuff I'm interested in. Hopefully you'll find some of it
+              interesting too.
+            </p>
+            <div class="hero-underline"></div>
+          </div>
+          <div class="hero-image">
+            <img
+              src="/images/articles-hero.jpg"
+              alt="Writing articles"
+              width="600"
+              height="400"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container main-content">
+      <div class="content-grid">
+        <div class="articles-list">
+          <h2>All posts by date</h2>
+          {articles.map(article => (
+            <article class="article-card">
+              <h3>
+                <a href={`/articles/${article.slug}`}>{article.data.title}</a>
+              </h3>
+              <div class="article-meta">
+                <span>Published: {formatDate(article.data.publishDate)}</span>
+                <span>Category: <span class="category">{article.data.category}</span></span>
+                <span>Written By: {article.data.author}</span>
+              </div>
+              <p>{article.data.excerpt}</p>
+            </article>
+          ))}
+        </div>
+
+        <aside class="sidebar">
+          <div class="topics-section">
+            <h2>Browse Topics</h2>
+            <div class="topics-list">
+              {topics.map(topic => (
+                <a href={`/articles/${topic.slug}`} class="topic-link">
+                  <span class="topic-icon">{topic.icon}</span>
+                  <span>{topic.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div class="search-section">
+            <h2>Search</h2>
+            <form class="search-form">
+              <input
+                type="search"
+                placeholder="Search"
+                class="search-input"
+                name="search"
+              />
+            </form>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+      <EmailSignup />
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</MainLayout>
+
+<style>
+  .hero {
+    padding: 6rem 0;
+    background-color: #fff;
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-text p {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .hero-underline {
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    object-fit: cover;
+  }
+
+  .main-content {
+    padding: 4rem 0;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+  }
+
+  .articles-list h2,
+  .sidebar h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+
+  .article-card {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .article-card:last-child {
+    border-bottom: none;
+  }
+
+  .article-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .article-card h3 a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .article-card h3 a:hover {
+    color: var(--primary-color);
+  }
+
+  .article-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .category {
+    color: var(--primary-color);
+  }
+
+  .article-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .topics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .topic-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+    border-radius: 0.5rem;
+  }
+
+  .topic-link:hover {
+    background-color: var(--hover-bg);
+  }
+
+  .topic-icon {
+    font-size: 1.25rem;
+  }
+
+  .search-section {
+    margin-top: 3rem;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  @media (max-width: 1024px) {
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .content-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .sidebar {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 4rem 0;
+    }
+
+    .hero-text h1 {
+      font-size: 2.5rem;
+    }
+
+    .article-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+</style>

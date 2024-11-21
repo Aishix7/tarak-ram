@@ -1,0 +1,145 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+---
+
+<MainLayout title="About Tarak Ram">
+  <Navigation slot="header" />
+  
+  <main class="about-page">
+    <section class="hero bg-white py-16 md:py-24">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <div class="md:w-1/2">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">About Me</h1>
+            <p class="text-xl text-gray-600 mb-6">
+              Hey, I'm Tarak Ram. I'm an ex-doctor turned YouTuber, 
+              Podcaster, entrepreneur, and author (and I dabble with the 
+              occasional investment too).
+            </p>
+            <div class="w-20 h-1 bg-blue-500"></div>
+          </div>
+          <div class="md:w-1/2">
+            <img 
+              src="/images/tarak-ram-hero.jpg" 
+              alt="Tarak Ram" 
+              class="rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="who-am-i py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Who Am I</h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-2/3">
+            <p class="text-lg mb-4">
+              Hey friends. I'm Tarak Ram. A former doctor turned YouTuber, entrepreneur, podcaster and 
+              soon-to-be author. I've been creating YouTube videos for over 7 years and have amassed a 
+              following of over 5.8 million on my main channel.
+            </p>
+            <p class="text-lg mb-4">
+              This page is a little self indulgent, it's all about me. Hopefully you'll find it interesting though 😊.
+            </p>
+          </div>
+          <div class="md:w-1/3">
+            <img 
+              src="/images/tarak-ram-casual.jpg" 
+              alt="Tarak Ram casual" 
+              class="rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-facts py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Quick Facts About Me</h2>
+        <ul class="list-disc list-inside space-y-4 text-lg">
+          <li>I studied medicine for 6 years at Cambridge University, graduating in 2018.</li>
+          <li>I spent 2 years working as a Junior Doctor in the UK's National Health Service.</li>
+          <li>I started my YouTube channel in 2017.</li>
+          <li>My first videos were about medicine and studying. Now I make content about 
+              productivity, books, tech, and evidence-based strategies and tools to help us 
+              be more productive and build a life we love.</li>
+          <li>I'm 30 years old. Born in May, 1994 in Pakistan. I now live in London.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="journey py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">My Journey From Student to Creator</h2>
+        <div class="space-y-12">
+          <div class="flex">
+            <div class="flex-shrink-0 w-24 text-right pr-4">
+              <span class="font-bold text-blue-500">1994 - 2012</span>
+            </div>
+            <div class="border-l-2 border-blue-500 pl-4 pb-8">
+              <p>  Born in Pakistan, moved to the UK, started coding at 12, and worked as a freelance web designer.</p>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="flex-shrink-0 w-24 text-right pr-4">
+              <span class="font-bold text-blue-500">2012 - 2018</span>
+            </div>
+            <div class="border-l-2 border-blue-500 pl-4 pb-8">
+              <p>Studied at Cambridge University, started YouTube channel, graduated with MBBS.</p>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="flex-shrink-0 w-24 text-right pr-4">
+              <span class="font-bold text-blue-500">2018 - 2020</span>
+            </div>
+            <div class="border-l-2 border-blue-500 pl-4 pb-8">
+              <p>Worked as a Junior Doctor, hit 1 million YouTube subscribers, started online courses.</p>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="flex-shrink-0 w-24 text-right pr-4">
+              <span class="font-bold text-blue-500">2020 - 2023</span>
+            </div>
+            <div class="border-l-2 border-blue-500 pl-4">
+              <p>Launched Part Time YouTuber Academy, moved to London, started podcast, reached 4 million subscribers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="in-the-media py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">In the media</h2>
+        <p class="text-lg mb-8">I've been featured in a few places... here are my favourites</p>
+        <div class="flex flex-wrap justify-center items-center gap-8">
+          <img src="/images/media-logo-1.png" alt="Media Logo 1" class="h-12" />
+          <img src="/images/media-logo-2.png" alt="Media Logo 2" class="h-12" />
+          <img src="/images/media-logo-3.png" alt="Media Logo 3" class="h-12" />
+          <img src="/images/media-logo-4.png" alt="Media Logo 4" class="h-12" />
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter-signup py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <EmailSignup />
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" />
+</MainLayout>
+
+<style>
+  .about-page {
+    @apply text-gray-800;
+  }
+  .container {
+    @apply max-w-4xl;
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+import EmailSignupForm from './EmailSignup.astro';
+---
+
+<section class="hero">
+  <div class="container hero-container">
+    <div class="hero-content">
+      <h1>Hey friends —</h1>
+      <p class="intro">
+        I'm Tarak Ram. <a href="/youtube">YouTuber</a>, 
+        <a href="/podcast">Podcaster</a>, and so much more.
+        <a href="/book">check out my favourite books</a>.
+      </p>
+      <p class="offer">
+       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt, libero mollitia ex accusamus, laboriosam totam natus eaque, deserunt iste perferendis expedita adipisci. Dolor nam voluptates dolores hic dignissimos. Aut, rem.
+      </p>
+      
+    </div>
+    <div class="hero-image">
+      <img 
+        src="/images/book-photo.jpg" 
+        alt="Tarak Ram" 
+        width="600"
+        height="400"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 4rem 0;
+  }
+
+  .hero-container {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .intro {
+    font-size: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .intro a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+
+  .offer {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #4B5563;
+  }
+
+  .hero-image img {
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  @media (min-width: 768px) {
+    .hero-container {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+// src/pages/articles/[...slug].astro
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import EmailSignup from '../../components/EmailSignup.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+
+function formatDate(date: Date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<MainLayout title={article.data.title}>
+  <Navigation slot="header" />
+  
+  <main class="article-page">
+    <div class="container mx-auto px-4 py-12">
+      <article class="max-w-3xl mx-auto">
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">{article.data.title}</h1>
+          <div class="flex flex-wrap items-center text-gray-600 gap-4">
+            <span>Published: {formatDate(article.data.publishDate)}</span>
+            <span>Category: <span class="text-blue-600">{article.data.category}</span></span>
+            <span>Written By: {article.data.author}</span>
+          </div>
+        </header>
+        
+        {article.data.image && (
+          <img src={article.data.image} alt={article.data.title} class="w-full h-64 object-cover rounded-lg mb-8" />
+        )}
+        
+        <div class="prose prose-lg max-w-none">
+          <Content />
+        </div>
+      </article>
+    </div>
+
+    <div class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+          <EmailSignup />
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer slot="footer" />
+</MainLayout>
+
+<style>
+  .article-page {
+    background-color: #ffffff;
+  }
+
+  .prose {
+    max-width: 65ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .prose img {
+    border-radius: 0.5rem;
+  }
+
+  .prose h2 {
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose p {
+    margin-bottom: 1.5rem;
+  }
+
+  .prose ul, .prose ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .prose {
+      font-size: 1rem;
+    }
+  }
+</style>
