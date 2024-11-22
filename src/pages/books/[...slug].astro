@@ -16,6 +16,14 @@ export async function getStaticPaths() {
 
 const { book } = Astro.props;
 const { Content } = await book.render();
+
+const formatDate = (date: Date) => {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
 ---
 
 <MainLayout title={`${book.data.title} - Book Summary & Notes`}>
@@ -23,96 +31,119 @@ const { Content } = await book.render();
   
   <main class="min-h-screen bg-gray-50">
     <article class="container mx-auto px-4 py-12">
-      <!-- Book Header -->
-      <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+      {/* Hero Section */}
+      <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden mb-12">
         <div class="md:flex">
-          <div class="md:flex-shrink-0">
+          <div class="md:flex-shrink-0 p-6">
             <Image
               src={book.data.coverImage}
               alt={book.data.title}
               width={300}
               height={450}
-              class="h-full w-full object-cover md:w-48"
+              class="w-full h-auto md:w-48 object-cover rounded-lg"
             />
           </div>
           <div class="p-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">{book.data.title}</h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{book.data.title}</h1>
             <p class="text-xl text-gray-600 mb-4">{book.data.description}</p>
             <p class="text-sm text-gray-500">By {book.data.author}</p>
+            <p class="text-sm text-gray-500 mt-2">Published on {formatDate(book.data.publishDate)}</p>
           </div>
         </div>
       </div>
 
-      <div class="max-w-4xl mx-auto mt-12">
-        {/* Only show "3 Sentences" section if at least one sentence exists */}
-        {(book.data.sentence1 || book.data.sentence2 || book.data.sentence3) && (
-          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">
-              <span class="inline-block mr-2">🚀</span>
-              The Book in 3 Sentences
-            </h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700">
-              {book.data.sentence1 && <li>{book.data.sentence1}</li>}
-              {book.data.sentence2 && <li>{book.data.sentence2}</li>}
-              {book.data.sentence3 && <li>{book.data.sentence3}</li>}
-            </ol>
-          </div>
-        )}
+      {/* Main Content */}
+      <div class="max-w-4xl mx-auto">
+        {/* The Book in 3 Sentences */}
+        <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+            <span class="mr-2">🚀</span> The Book in 3 Sentences
+          </h2>
+          <ol class="list-decimal list-inside space-y-2 text-gray-700">
+            <li>{book.data.sentence1}</li>
+            <li>{book.data.sentence2}</li>
+            <li>{book.data.sentence3}</li>
+          </ol>
+        </section>
 
-        {/* Only show Impressions if they exist */}
-        {book.data.impressions && (
-          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">
-              <span class="inline-block mr-2">🎨</span>
-              Impressions
-            </h2>
-            <p class="text-gray-700">{book.data.impressions}</p>
-          </div>
-        )}
+        {/* Impressions */}
+        <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+            <span class="mr-2">🎨</span> Impressions
+          </h2>
+          <p class="text-gray-700">{book.data.impressions}</p>
+        </section>
 
-        {/* Only show Who Should Read It if it exists */}
-        {book.data.whoShouldRead && (
-          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">
-              <span class="inline-block mr-2">👤</span>
-              Who Should Read It?
-            </h2>
-            <p class="text-gray-700">{book.data.whoShouldRead}</p>
-          </div>
-        )}
+        {/* Who Should Read It */}
+        <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+            <span class="mr-2">👤</span> Who Should Read It?
+          </h2>
+          <p class="text-gray-700">{book.data.whoShouldRead}</p>
+        </section>
 
-        {/* Only show Top Quotes if they exist */}
-        {book.data.topQuotes && book.data.topQuotes.length > 0 && (
-          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">
-              <span class="inline-block mr-2">✍️</span>
-              My Top {book.data.topQuotes.length} Quotes
-            </h2>
-            <ul class="space-y-4">
-              {book.data.topQuotes.map((quote) => (
-                <li>
-                  <blockquote class="border-l-4 border-blue-500 pl-4 italic text-gray-700">
-                    "{quote}"
-                  </blockquote>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {/* How the Book Changed Me */}
+        <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+            <span class="mr-2">🌱</span> How the Book Changed Me
+          </h2>
+          <ul class="list-disc list-inside space-y-2 text-gray-700">
+            {book.data.howBookChangedMe.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
 
-        <div class="bg-white rounded-xl shadow-md p-8">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">
-            <span class="inline-block mr-2">📝</span>
-            Summary + Notes
+        {/* My Top 3 Quotes */}
+        <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+            <span class="mr-2">✍️</span> My Top 3 Quotes
+          </h2>
+          <ul class="space-y-4">
+            {book.data.topQuotes.map((quote) => (
+              <li>
+                <blockquote class="border-l-4 border-blue-500 pl-4 italic text-gray-700">
+                  "{quote}"
+                </blockquote>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Summary + Notes */}
+        <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+            <span class="mr-2">📝</span> Summary + Notes
           </h2>
           <div class="prose prose-lg max-w-none text-gray-700">
             <Content />
           </div>
+        </section>
+      </div>
+
+      {/* Rating */}
+      <div class="max-w-4xl mx-auto mt-12 text-center">
+        <div class="inline-block">
+          <span class="text-3xl font-bold text-gray-700">{book.data.rating}</span>
+          <div class="flex items-center justify-center mt-2">
+            {Array.from({ length: 5 }, (_, i) => (
+              <svg
+                class={`w-6 h-6 ${i < Math.floor(book.data.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
         </div>
+        <p class="text-gray-600 mt-2">Rate This Article</p>
       </div>
     </article>
 
-    <section class="bg-white py-16 mt-12">
+    {/* Email Signup */}
+    <section class="bg-gray-100 py-16">
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
           <EmailSignup />
@@ -125,24 +156,18 @@ const { Content } = await book.render();
 </MainLayout>
 
 <style>
-.container {
-  max-width: 1200px;
-}
-
-.prose {
-  max-width: 65ch;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.prose img {
-  border-radius: 0.5rem;
-}
-
-@media (max-width: 768px) {
   .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    max-width: 1200px;
   }
-}
+
+  .prose img {
+    border-radius: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
 </style>
