@@ -17,7 +17,6 @@ topQuotes:
   - "You do not rise to the level of your goals. You fall to the level of your systems."
   - "Every action you take is a vote for the type of person you wish to become."
   - "Habits are the compound interest of self-improvement."
-rating: 4.8
 ---
 
 # Atomic Habits: Book Summary and Key Takeaways

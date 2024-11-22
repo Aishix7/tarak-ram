@@ -39,7 +39,6 @@ const booksCollection = defineCollection({
     whoShouldRead: z.string(),
     howBookChangedMe: z.array(z.string()),
     topQuotes: z.array(z.string()),
-    rating: z.number().min(0).max(5),
   }),
 });
 
