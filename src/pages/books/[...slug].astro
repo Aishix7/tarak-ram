@@ -1,0 +1,148 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import EmailSignup from '../../components/EmailSignup.astro';
+import Footer from '../../components/Footer.astro';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const books = await getCollection('books');
+  return books.map(book => ({
+    params: { slug: book.slug },
+    props: { book },
+  }));
+}
+
+const { book } = Astro.props;
+const { Content } = await book.render();
+---
+
+<MainLayout title={`${book.data.title} - Book Summary & Notes`}>
+  <Navigation slot="header" />
+  
+  <main class="min-h-screen bg-gray-50">
+    <article class="container mx-auto px-4 py-12">
+      <!-- Book Header -->
+      <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="md:flex">
+          <div class="md:flex-shrink-0">
+            <Image
+              src={book.data.coverImage}
+              alt={book.data.title}
+              width={300}
+              height={450}
+              class="h-full w-full object-cover md:w-48"
+            />
+          </div>
+          <div class="p-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">{book.data.title}</h1>
+            <p class="text-xl text-gray-600 mb-4">{book.data.description}</p>
+            <p class="text-sm text-gray-500">By {book.data.author}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-4xl mx-auto mt-12">
+        {/* Only show "3 Sentences" section if at least one sentence exists */}
+        {(book.data.sentence1 || book.data.sentence2 || book.data.sentence3) && (
+          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">
+              <span class="inline-block mr-2">🚀</span>
+              The Book in 3 Sentences
+            </h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700">
+              {book.data.sentence1 && <li>{book.data.sentence1}</li>}
+              {book.data.sentence2 && <li>{book.data.sentence2}</li>}
+              {book.data.sentence3 && <li>{book.data.sentence3}</li>}
+            </ol>
+          </div>
+        )}
+
+        {/* Only show Impressions if they exist */}
+        {book.data.impressions && (
+          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">
+              <span class="inline-block mr-2">🎨</span>
+              Impressions
+            </h2>
+            <p class="text-gray-700">{book.data.impressions}</p>
+          </div>
+        )}
+
+        {/* Only show Who Should Read It if it exists */}
+        {book.data.whoShouldRead && (
+          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">
+              <span class="inline-block mr-2">👤</span>
+              Who Should Read It?
+            </h2>
+            <p class="text-gray-700">{book.data.whoShouldRead}</p>
+          </div>
+        )}
+
+        {/* Only show Top Quotes if they exist */}
+        {book.data.topQuotes && book.data.topQuotes.length > 0 && (
+          <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">
+              <span class="inline-block mr-2">✍️</span>
+              My Top {book.data.topQuotes.length} Quotes
+            </h2>
+            <ul class="space-y-4">
+              {book.data.topQuotes.map((quote) => (
+                <li>
+                  <blockquote class="border-l-4 border-blue-500 pl-4 italic text-gray-700">
+                    "{quote}"
+                  </blockquote>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div class="bg-white rounded-xl shadow-md p-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            <span class="inline-block mr-2">📝</span>
+            Summary + Notes
+          </h2>
+          <div class="prose prose-lg max-w-none text-gray-700">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section class="bg-white py-16 mt-12">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+          <EmailSignup />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" />
+</MainLayout>
+
+<style>
+.container {
+  max-width: 1200px;
+}
+
+.prose {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose img {
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+</style>

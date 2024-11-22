@@ -1,42 +1,23 @@
 ---
-const articles = [
-  {
-    category: 'NEWSLETTER',
-    title: '3 Lessons I Learned This Week',
-    link: '/articles/3-lessons'
-  },
-  {
-    category: 'NEWSLETTER',
-    title: 'What does it actually mean to be "efficient"?',
-    link: '/articles/efficiency'
-  },
-  {
-    category: 'NEWSLETTER',
-    title: 'A Little Happier: Stoic Principles for Modern Life',
-    link: '/articles/stoic-principles'
-  },
-  {
-    category: 'NEWSLETTER',
-    title: 'The 5/3/1 Method',
-    link: '/articles/531-method'
-  },
-  {
-    category: 'NEWSLETTER',
-    title: 'Are labels holding you back?',
-    link: '/articles/labels'
-  }
-];
+import { getCollection } from 'astro:content';
+
+// Fetch newsletters and sort by date
+const newsletters = await getCollection('newsletters');
+newsletters.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+// Get only the top 5 most recent newsletters
+const latestNewsletters = newsletters.slice(0, 5);
 ---
 
 <section class="articles-section">
   <div class="container">
     <h2>Latest Articles</h2>
     <div class="articles-list">
-      {articles.map(article => (
+      {latestNewsletters.map(newsletter => (
         <article class="article-card">
-          <span class="category">{article.category}</span>
+          <span class="category">NEWSLETTER</span>
           <h3>
-            <a href={article.link}>{article.title}</a>
+            <a href={`/newsletter/${newsletter.slug}`}>{newsletter.data.title}</a>
           </h3>
         </article>
       ))}
@@ -47,6 +28,13 @@ const articles = [
 <style>
   .articles-section {
     padding: 4rem 0;
+    background-color: white;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
   }
 
   h2 {
@@ -54,6 +42,7 @@ const articles = [
     font-size: 2.5rem;
     margin-bottom: 3rem;
     position: relative;
+    color: var(--text-color);
   }
 
   h2::after {
@@ -79,11 +68,13 @@ const articles = [
     padding: 1.5rem;
     border-radius: 0.5rem;
     background: white;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #eaeaea;
   }
 
   .article-card:hover {
     transform: translateX(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .category {
@@ -96,14 +87,34 @@ const articles = [
 
   h3 {
     font-size: 1.25rem;
+    line-height: 1.4;
   }
 
   h3 a {
     color: var(--text-color);
     text-decoration: none;
+    transition: color 0.2s;
   }
 
   h3 a:hover {
     color: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    h2 {
+      font-size: 2rem;
+    }
+
+    .articles-list {
+      padding: 0 1rem;
+    }
+
+    .article-card {
+      padding: 1.25rem;
+    }
+
+    .article-card:hover {
+      transform: none;
+    }
   }
 </style>

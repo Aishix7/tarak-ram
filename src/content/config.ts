@@ -24,7 +24,25 @@ const newsletterCollection = defineCollection({
   }),
 });
 
+const booksCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    publishDate: z.date(),
+    author: z.string(),
+    coverImage: z.string(),
+    description: z.string(),
+    sentence1: z.string().optional(),
+    sentence2: z.string().optional(),
+    sentence3: z.string().optional(),
+    impressions: z.string().optional(),
+    whoShouldRead: z.string().optional(),
+    topQuotes: z.array(z.string()).optional().default([]),
+  }),
+});
+
 export const collections = {
   articles: articlesCollection,
   newsletters: newsletterCollection,
+  books: booksCollection,
 };
