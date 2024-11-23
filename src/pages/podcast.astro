@@ -11,15 +11,6 @@ if (!videos.length) {
   console.error("No videos fetched. Check API response or fetch function.");
 }
 
-// Group videos by season (assuming seasons are mentioned in video titles or descriptions)
-const seasons = videos.reduce((acc, video) => {
-  const seasonMatch = video.title.match(/Season (\d+)/i);
-  const season = seasonMatch ? parseInt(seasonMatch[1]) : 1;
-  if (!acc[season]) acc[season] = [];
-  acc[season].push(video);
-  return acc;
-}, {});
-
 const latestVideo = videos[0];
 ---
 
@@ -78,10 +69,7 @@ const latestVideo = videos[0];
     <!-- Episodes Section -->
     <section class="py-16 px-4">
       <div class="container mx-auto max-w-6xl">
-        <div class="flex overflow-x-auto gap-2 mb-8 pb-4">
-          
-        </div>
-
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Latest Episodes</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {videos.map((video) => (
             <a
@@ -130,3 +118,4 @@ const latestVideo = videos[0];
 
   <Footer slot="footer" />
 </MainLayout>
+

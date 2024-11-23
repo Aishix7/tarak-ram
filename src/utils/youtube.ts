@@ -8,10 +8,10 @@ export interface YouTubeVideo {
 
 export async function fetchYouTubeVideos(): Promise<YouTubeVideo[]> {
   const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
-  const CHANNEL_ID = "UCvqXm4_ibDLtVOya3IOGYHA"; // Replace with your channel ID
+  const CHANNEL_ID = import.meta.env.VITE_YOUTUBE_CHANNEL_ID;
 
-  if (!YOUTUBE_API_KEY) {
-    console.error("Missing YouTube API Key!");
+  if (!YOUTUBE_API_KEY || !CHANNEL_ID) {
+    console.error("Missing YouTube API Key or Channel ID!");
     return [];
   }
 
