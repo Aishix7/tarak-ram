@@ -5,10 +5,16 @@ import Footer from '../components/Footer.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import { fetchYouTubeVideos } from '../utils/youtube';
 
-// Fetch YouTube videos
-const videos = await fetchYouTubeVideos();
-if (!videos.length) {
-  console.error("No videos fetched. Check API response or fetch function.");
+// Fetch YouTube videos with error handling
+let videos = [];
+let error = null;
+
+try {
+  videos = await fetchYouTubeVideos();
+  console.log(`Successfully fetched ${videos.length} videos`);
+} catch (e) {
+  console.error('Error in podcast page:', e);
+  error = e.message;
 }
 
 const latestVideo = videos[0];
@@ -70,6 +76,23 @@ const latestVideo = videos[0];
     <section class="py-16 px-4">
       <div class="container mx-auto max-w-6xl">
         <h2 class="text-3xl font-bold text-gray-900 mb-8">Latest Episodes</h2>
+        
+        {error && (
+          <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
+            {error}
+          </div>
+        )}
+
+        {videos.length === 0 && !error && (
+          <div class="text-center py-12">
+            <div class="animate-pulse space-y-4">
+              <div class="h-48 bg-gray-200 rounded-xl"></div>
+              <div class="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            </div>
+          </div>
+        )}
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {videos.map((video) => (
             <a
