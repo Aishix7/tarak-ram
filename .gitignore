@@ -16,9 +16,37 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.env.local
+.env.development
 
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+
+# Visual Studio Code settings
+.vscode/
+
+# Temporary files
+*.log
+*.cache
+.cache/
+
+# System Files
+Thumbs.db
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# dotenv environment variable files
+.env.*
+
+# Astro specific
+.astro

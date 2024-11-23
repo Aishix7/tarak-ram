@@ -1,0 +1,132 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+import { fetchYouTubeVideos } from '../utils/youtube';
+
+// Fetch YouTube videos
+const videos = await fetchYouTubeVideos();
+if (!videos.length) {
+  console.error("No videos fetched. Check API response or fetch function.");
+}
+
+// Group videos by season (assuming seasons are mentioned in video titles or descriptions)
+const seasons = videos.reduce((acc, video) => {
+  const seasonMatch = video.title.match(/Season (\d+)/i);
+  const season = seasonMatch ? parseInt(seasonMatch[1]) : 1;
+  if (!acc[season]) acc[season] = [];
+  acc[season].push(video);
+  return acc;
+}, {});
+
+const latestVideo = videos[0];
+---
+
+<MainLayout title="Deep Dive Podcast - Tarak Ram">
+  <Navigation slot="header" />
+
+  <main class="min-h-screen bg-gray-50">
+    <!-- Hero Section -->
+    <section class="bg-white py-16 px-4">
+      <div class="container mx-auto max-w-6xl grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Deep Dive With Tarak Ram
+          </h1>
+          <p class="text-xl text-gray-600 mb-8">
+            The podcast that delves into the minds of entrepreneurs, creators and other inspiring people
+            to uncover the philosophies, strategies, and tools that help us live happier, healthier, and more
+            productive lives.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="https://open.spotify.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-6 py-3 bg-[#1DB954] text-white rounded-full hover:bg-opacity-90 transition-colors"
+            >
+              Spotify
+            </a>
+            <a
+              href="https://www.youtube.com/@tarakram.18"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-full hover:bg-opacity-90 transition-colors"
+            >
+              YouTube
+            </a>
+          </div>
+        </div>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-xl">
+          {latestVideo && (
+            <iframe
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${latestVideo.videoId}`}
+              title={latestVideo.title}
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              class="w-full h-full"
+            />
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Episodes Section -->
+    <section class="py-16 px-4">
+      <div class="container mx-auto max-w-6xl">
+        <div class="flex overflow-x-auto gap-2 mb-8 pb-4">
+          
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {videos.map((video) => (
+            <a
+              href={`https://www.youtube.com/watch?v=${video.videoId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group"
+            >
+              <article class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                <div class="aspect-video relative">
+                  <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    class="w-full h-full object-cover"
+                  />
+                  <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-colors" />
+                </div>
+                <div class="p-6">
+                  <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                    {video.title}
+                  </h3>
+                  <time class="text-sm text-gray-500">
+                    {new Date(video.publishedAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="bg-white py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+          <EmailSignup />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" />
+</MainLayout>
