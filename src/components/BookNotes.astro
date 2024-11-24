@@ -1,42 +1,29 @@
 ---
-const books = [
-  {
-    title: 'Die With Zero – Summary With Notes and Highlights',
-    subtitle: 'Summary With Notes and Highlights',
-    coverImage: '/images/books/die-with-zero.jpg',
-    author: 'Bill Perkins',
-    description: 'A practical guide to getting the most out of your money – and your life. Including highlights, recommendations, and a full summary of the book.',
-    link: '/books/die-with-zero'
-  },
-  {
-    title: 'Atomic Habits (James Clear) – Book Summary, Notes & Highlights',
-    subtitle: 'Summary With Notes and Highlights',
-    coverImage: '/images/books/atomic-habits.jpg',
-    author: 'James Clear',
-    description: 'This book helped me understand how habits are formed and what we can do to build long-lasting chains of cues, cravings, responses, and rewards to create systems that will help us achieve our goals.',
-    link: '/books/atomic-habits'
-  }
-];
+import { getCollection } from 'astro:content';
+
+const books = await getCollection('books');
+books.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const recentBooks = books.slice(0, 2);
 ---
 
 <section class="book-notes">
   <div class="container">
     <h2>Read my Book Notes</h2>
     <div class="books-grid">
-      {books.map(book => (
-        <a href={book.link} class="book-card">
+      {recentBooks.map(book => (
+        <a href={`/books/${book.slug}`} class="book-card">
           <div class="book-content">
             <img 
-              src={book.coverImage} 
-              alt={`Cover of ${book.title}`} 
+              src={book.data.coverImage} 
+              alt={`Cover of ${book.data.title}`} 
               class="book-cover"
               width="200"
               height="300"
             />
             <div class="book-info">
-              <h3>{book.title}</h3>
-              <p class="subtitle">{book.subtitle}</p>
-              <p class="description">{book.description}</p>
+              <h3>{book.data.title}</h3>
+              <p class="subtitle">Summary With Notes and Highlights</p>
+              <p class="description">{book.data.description}</p>
             </div>
           </div>
         </a>
@@ -140,7 +127,8 @@ const books = [
 
   @media (min-width: 768px) {
     .books-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>
+
