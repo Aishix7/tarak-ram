@@ -1,36 +1,30 @@
 ---
 import EmailSignup from "./EmailSignup.astro";
 
+
 const currentYear = new Date().getFullYear();
+
 
 const footerLinks = {
   LINKS: [
-    { text: 'My Book', href: '/my-book' },
     { text: 'Newsletter', href: '/newsletter' },
     { text: 'About', href: '/about' },
-    { text: 'Articles', href: '/articles' }
+    { text: 'Blogs', href: '/blogs' }
   ],
   MORE: [
-    { text: 'Jobs', href: '/jobs' },
+   
     { text: 'Podcast', href: '/podcast' },
-    { text: 'Book Notes', href: '/book-notes' }
-  ],
-  COURSES: [
-    { text: 'Part-Time YouTuber Academy', href: '/youtube-academy' },
-    { text: 'Part-Time YouTuber Accelerator', href: '/youtube-accelerator' }
   ]
 };
 
+
 const socialLinks = [
-  { platform: 'facebook', href: '#' },
-  { platform: 'twitter', href: '#' },
-  { platform: 'instagram', href: '#' },
-  { platform: 'linkedin', href: '#' },
-  { platform: 'youtube', href: '#' },
-  { platform: 'tiktok', href: '#' }
+  { platform: 'twitter', href: 'https://x.com/Tarak__Ram' },
+  { platform: 'instagram', href: 'https://www.instagram.com/tarak.ram_18/' },
+  { platform: 'linkedin', href: 'https://www.linkedin.com/in/tarakram18/' },
+  { platform: 'youtube', href: 'https://www.youtube.com/@tarakram.18' },
 ];
 ---
-
 
 
 <footer class="footer">
@@ -48,16 +42,24 @@ const socialLinks = [
           </ul>
         </div>
       ))}
+      <div class="footer-column connect-column">
+        <h3>CONNECT WITH ME</h3>
+        <a href="mailto:contact@tarakram.com" class="connect-button">
+          Contact Me
+        </a>
+      </div>
     </div>
+
 
     <div class="footer-bottom">
       <div class="social-links">
         {socialLinks.map(link => (
-          <a href={link.href} class="social-link" aria-label={`Follow on ${link.platform}`}>
+          <a href={link.href} class="social-link" aria-label={`Follow on ${link.platform}`} target="_blank" rel="noopener noreferrer">
             <img src={`/images/social/${link.platform}.svg`} alt="" />
           </a>
         ))}
       </div>
+
 
       <div class="footer-legal">
         <p>&copy; Tarak Ram {currentYear}. All Rights Reserved</p>
@@ -119,6 +121,29 @@ const socialLinks = [
     border-top: 1px solid #374151;
   }
 
+  .connect-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  .connect-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+
+
+  .connect-button:hover {
+    background-color: var(--primary-color-dark);
+  }
+
   .social-links {
     display: flex;
     gap: 1rem;
@@ -136,10 +161,7 @@ const socialLinks = [
     transition: background-color 0.2s;
   }
 
-  .social-link:hover {
-    background: var(--primary-color);
-  }
-
+  
   .footer-legal {
     text-align: center;
     font-size: 0.875rem;

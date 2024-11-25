@@ -1,23 +1,11 @@
 ---
 const navItems = [
-  { text: 'BOOKS', href: '/books' },
-  { 
-    text: 'ARTICLES', 
-    href: '/articles', 
-    hasDropdown: true,
-    dropdownItems: [
-      { text: 'ARTICLES', href: '/articles' },
-      { text: 'PRODUCTIVITY', href: '/articles/productivity' },
-      { text: 'STUDYING', href: '/articles/studying' },
-      { text: 'YOUTUBE', href: '/articles/youtube' },
-      { text: 'BUSINESS', href: '/articles/business' },
-      { text: 'WRITING', href: '/articles/writing' },
-      { text: 'JOURNAL', href: '/articles/journal' }
-    ]
-  },
-  { text: 'NEWSLETTER', href: '/newsletter' },
-  { text: 'PODCASTS', href: '/podcast' },
-  { text: 'BLOGS', href: '/book-notes' },
+{ text: 'PODCASTS', href: '/podcast' },
+{ text: 'NEWSLETTER', href: '/newsletter' },
+{ text: 'BLOGS', href: '/blogs' },
+  // { text: 'BOOKS', href: '/books' },
+ 
+  
   { text: 'ABOUT', href: '/about' },
 ];
 ---
@@ -33,17 +21,7 @@ const navItems = [
         <div class="nav-item">
           <a href={item.href} class="nav-link">
             {item.text}
-            {item.hasDropdown && <span class="dropdown-arrow">▼</span>}
           </a>
-          {item.hasDropdown && item.dropdownItems && (
-            <div class="dropdown-menu">
-              {item.dropdownItems.map(dropdownItem => (
-                <a href={dropdownItem.href} class="dropdown-item">
-                  {dropdownItem.text}
-                </a>
-              ))}
-            </div>
-          )}
         </div>
       ))}
     </div>
@@ -61,42 +39,14 @@ const navItems = [
 
     <div class="mobile-menu" id="mobile-menu">
       <div class="mobile-menu-header">
-        
+       
       </div>
       <div class="mobile-menu-links">
         {navItems.map(item => (
           <div class="mobile-nav-item">
-            <button 
-              class="mobile-nav-link"
-              aria-expanded="false"
-              aria-controls={`dropdown-${item.text.toLowerCase().replace(/\s+/g, '-')}`}
-            >
+            <a href={item.href} class="mobile-nav-link">
               {item.text}
-              {item.hasDropdown && (
-                <svg 
-                  class="dropdown-chevron" 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              )}
-            </button>
-            {item.hasDropdown && item.dropdownItems && (
-              <div 
-                class="mobile-dropdown"
-                id={`dropdown-${item.text.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                {item.dropdownItems.map(dropdownItem => (
-                  <a href={dropdownItem.href} class="mobile-dropdown-item">
-                    {dropdownItem.text}
-                  </a>
-                ))}
-              </div>
-            )}
+            </a>
           </div>
         ))}
       </div>
@@ -108,7 +58,6 @@ const navItems = [
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   const closeMenuBtn = document.querySelector('.close-menu-btn');
-  const dropdownButtons = document.querySelectorAll('.mobile-nav-link[aria-controls]');
   const body = document.body;
 
   function toggleMenu() {
@@ -116,40 +65,10 @@ const navItems = [
     mobileMenuBtn?.setAttribute('aria-expanded', (!isExpanded).toString());
     mobileMenu?.classList.toggle('is-open');
     body.style.overflow = isExpanded ? 'auto' : 'hidden';
-    
-    // Close all dropdowns when closing menu
-    if (isExpanded) {
-      dropdownButtons.forEach(button => {
-        button.setAttribute('aria-expanded', 'false');
-        const dropdown = document.getElementById(button.getAttribute('aria-controls'));
-        dropdown?.classList.remove('is-open');
-      });
-    }
-  }
-
-  function toggleDropdown(event) {
-    const button = event.currentTarget;
-    const isExpanded = button.getAttribute('aria-expanded') === 'true';
-    const dropdown = document.getElementById(button.getAttribute('aria-controls'));
-    
-    // Close other dropdowns
-    dropdownButtons.forEach(otherButton => {
-      if (otherButton !== button) {
-        otherButton.setAttribute('aria-expanded', 'false');
-        const otherDropdown = document.getElementById(otherButton.getAttribute('aria-controls'));
-        otherDropdown?.classList.remove('is-open');
-      }
-    });
-
-    button.setAttribute('aria-expanded', (!isExpanded).toString());
-    dropdown?.classList.toggle('is-open');
   }
 
   mobileMenuBtn?.addEventListener('click', toggleMenu);
   closeMenuBtn?.addEventListener('click', toggleMenu);
-  dropdownButtons.forEach(button => {
-    button.addEventListener('click', toggleDropdown);
-  });
 </script>
 
 <style>
@@ -200,46 +119,6 @@ const navItems = [
   .nav-link:hover {
     color: var(--primary-color);
   }
-
-  .dropdown-arrow {
-    font-size: 0.75rem;
-  }
-
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-    z-index: 1000;
-  }
-
-  .nav-item:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .dropdown-item {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: var(--text-color);
-    text-decoration: none;
-    font-size: 0.875rem;
-    transition: background-color 0.2s;
-  }
-
-  .dropdown-item:hover {
-    background-color: #f3f4f6;
-  }
-
-  
 
   .mobile-menu-btn {
     display: none;
@@ -321,35 +200,10 @@ const navItems = [
     cursor: pointer;
     width: 100%;
     text-align: left;
-  }
-
-  .dropdown-chevron {
-    transition: transform 0.2s ease;
-  }
-
-  .mobile-nav-link[aria-expanded="true"] .dropdown-chevron {
-    transform: rotate(180deg);
-  }
-
-  .mobile-dropdown {
-    display: none;
-    padding-left: 1rem;
-  }
-
-  .mobile-dropdown.is-open {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .mobile-dropdown-item {
-    padding: 0.75rem 1rem;
-    color: var(--text-color);
     text-decoration: none;
-    font-size: 0.875rem;
-    transition: background-color 0.2s;
   }
 
-  .mobile-dropdown-item:hover {
+  .mobile-nav-link:hover {
     background-color: #f3f4f6;
   }
 
@@ -385,3 +239,4 @@ const navItems = [
     transform: translateY(-7px) rotate(-45deg);
   }
 </style>
+

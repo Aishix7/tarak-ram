@@ -9,12 +9,55 @@ import EmailSignupForm from './EmailSignup.astro';
       <p class="intro">
         I'm Tarak Ram. An Entrepreneur, 
         <a href="/podcast">Podcaster</a>.
-        <a href="/books">check out my favourite books</a>.
       </p>
       <p class="offer">
-        I’m passionate about reading and meaningful conversations. Each week, I connect with 2–3 global founders to learn from their experiences. Through my newsletter, I share insights, book lessons, and helpful tools—delivered straight to your inbox for free.      </p>
+        I'm passionate about reading and meaningful conversations. Each week, I connect with 2–3 global founders to learn from their experiences. Through my newsletter, I share insights, book lessons, and helpful tools—delivered straight to your inbox for free.
+      </p>
       
+      <div class="signup-container">
+        <h2 class="signup-title">Download My Latest Newsletter</h2>
+        <p class="signup-text">
+          Get my latest insights on entrepreneurship and personal growth delivered straight to your inbox.
+        </p>
+        
+        <form class="signup-form" action="/api/subscribe" method="POST">
+          <div class="form-group">
+            <input 
+              type="email" 
+              name="email" 
+              placeholder="Enter your email address" 
+              required 
+              class="email-input"
+              aria-label="Email address"
+            />
+          </div>
+          
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                name="newsletter" 
+                class="checkbox-input"
+              />
+              <span class="checkbox-text">
+                I'd like to receive weekly insights and updates in my inbox.
+              </span>
+            </label>
+          </div>
+          
+          <div class="form-footer">
+            <button type="submit" class="download-button">
+              Download Now
+            </button>
+            <p class="privacy-notice">
+              By subscribing, you agree to our{" "}
+              <a href="/privacy" class="privacy-link">privacy policy</a>.
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
+    
     <div class="hero-image">
       <img 
         src="/images/tarak.jpg" 
@@ -29,11 +72,18 @@ import EmailSignupForm from './EmailSignup.astro';
 <style>
   .hero {
     padding: 4rem 0;
+    background-color: #fff;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
   .hero-container {
     display: grid;
-    gap: 2rem;
+    gap: 3rem;
   }
 
   .hero-content {
@@ -43,19 +93,26 @@ import EmailSignupForm from './EmailSignup.astro';
   }
 
   h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
+    color: #111827;
   }
 
   .intro {
     font-size: 1.5rem;
     line-height: 1.5;
+    color: #374151;
   }
 
   .intro a {
-    color: var(--primary-color);
+    color: #3B82F6;
     text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .intro a:hover {
+    color: #2563EB;
   }
 
   .offer {
@@ -64,16 +121,169 @@ import EmailSignupForm from './EmailSignup.astro';
     color: #4B5563;
   }
 
+  .signup-container {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background-color: #F9FAFB;
+    border-radius: 1rem;
+    border: 1px solid #E5E7EB;
+  }
+
+  .signup-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.75rem;
+  }
+
+  .signup-text {
+    font-size: 1rem;
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+  }
+
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .email-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .email-input:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .checkbox-group {
+    margin: 0.5rem 0;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+
+  .checkbox-input {
+    margin-top: 0.25rem;
+  }
+
+  .checkbox-text {
+    font-size: 0.875rem;
+    color: #4B5563;
+  }
+
+  .form-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .download-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background-color: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .download-button:hover {
+    background-color: #2563EB;
+  }
+
+  .privacy-notice {
+    font-size: 0.75rem;
+    color: #6B7280;
+    text-align: center;
+  }
+
+  .privacy-link {
+    color: #3B82F6;
+    text-decoration: none;
+  }
+
+  .privacy-link:hover {
+    text-decoration: underline;
+  }
+
+  .hero-image {
+    position: relative;
+  }
+
   .hero-image img {
+    width: 100%;
+    height: auto;
     border-radius: 1rem;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
                 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    object-fit: cover;
   }
 
   @media (min-width: 768px) {
     .hero-container {
       grid-template-columns: 1fr 1fr;
       align-items: center;
+      gap: 4rem;
+    }
+
+    .form-footer {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .download-button {
+      width: auto;
+    }
+
+    .privacy-notice {
+      text-align: right;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      padding: 3rem 0;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .intro {
+      font-size: 1.25rem;
+    }
+
+    .offer {
+      font-size: 1rem;
+    }
+
+    .signup-container {
+      padding: 1.25rem;
+    }
+
+    .signup-title {
+      font-size: 1.25rem;
     }
   }
 </style>
+
