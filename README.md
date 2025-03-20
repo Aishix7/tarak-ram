@@ -15,9 +15,7 @@ This is a personal website created for **Tarak**, a marketing agency owner and t
 - **Contact & Social Links:** Enables easy networking and outreach  
 
 ## 🛠️ Tech Stack  
-- **Frontend:** HTML, CSS, JavaScript (or mention framework used)  
-- **Backend:** (If applicable)  
-- **Hosting:** (Mention hosting service if known)  
+- **Frontend:** HTML, CSS, JavaScript, astro. js, tailwind CSS. 
 
 ## 📌 Future Enhancements  
 - Blog section for industry insights  
